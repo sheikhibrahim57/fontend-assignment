@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const Crad = () => {
   const [blogs, setBlogs] = useState(null);
@@ -7,7 +8,9 @@ const Crad = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/getBlog");
+        const res = await axios.get(
+          "https://assignment-backend-eta.vercel.app/getBlog"
+        );
         setBlogs(res.data);
       } catch (err) {
         console.log(err);
@@ -25,7 +28,19 @@ const Crad = () => {
 
     const blog = { blogTitle, blogDescription };
 
-    const res = await axios.post("http://localhost:3000/createBlog", blog);
+    const res = await axios.post(
+      "https://assignment-backend-eta.vercel.app/createBlog",
+      blog
+    );
+
+    if (res.data.insertedId) {
+      Swal.fire({
+        icon: "success",
+        title: "Blog Added Successfully!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
 
     console.log(res);
   };
